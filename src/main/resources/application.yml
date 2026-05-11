@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: sleepstyle-dashboard
+  thymeleaf:
+    cache: false
+  messages:
+    fallback-to-system-locale: false
+
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+      cookie:
+        http-only: true
+        same-site: strict
+
+sleepstyle:
+  api:
+    base-url: ${SLEEPSTYLE_API_BASE_URL:https://sleepstyle-api.fphcare.com/api/v1}
+    web-url: ${SLEEPSTYLE_WEB_URL:https://sleepstyle.fphcare.com}
+    product-family: ${SLEEPSTYLE_PRODUCT_FAMILY:SleepStyle}
+    product-model: ${SLEEPSTYLE_PRODUCT_MODEL:Auto}
+    product-culture: ${SLEEPSTYLE_PRODUCT_CULTURE:en-US}
+    utc-offset: ${SLEEPSTYLE_UTC_OFFSET:9}
+    origin: https://sleepstyle.fphcare.com

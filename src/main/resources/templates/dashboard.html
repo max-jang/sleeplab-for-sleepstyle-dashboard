@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.language}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="#{app.title}">SleepStyle Dashboard</title>
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
+	<script th:src="@{/webjars/chart.js/4.4.7/dist/chart.umd.js}" defer></script>
+	<script th:src="@{/js/dashboard.js}" defer></script>
+</head>
+<body
+	th:attr="
+		data-label-days=#{metric.days},
+		data-label-avg-ahi=#{metric.avgAhi},
+		data-label-avg-leak=#{metric.avgLeak},
+		data-label-avg-hours=#{metric.avgHours},
+		data-label-compliance=#{metric.compliance},
+		data-label-high-leak-days=#{metric.highLeakDays},
+		data-label-low-usage-days=#{metric.lowUsageDays},
+		data-label-ahi=#{chart.ahi},
+		data-label-leak=#{chart.leak},
+		data-label-hours=#{chart.hours},
+		data-label-humidity=#{chart.humidity},
+		data-label-compliant=#{chart.compliant},
+		data-label-not-compliant=#{chart.notCompliant},
+		data-label-score=#{chart.score},
+		data-label-source=#{label.source},
+		data-label-start-date=#{label.startDate},
+		data-label-model=#{label.model},
+		data-label-total-days=#{label.totalDays},
+		data-label-compliance-period=#{label.compliancePeriod},
+		data-label-best-window=#{label.bestWindow},
+		data-label-qualified-days=#{label.qualifiedDays},
+		data-label-nhis-pass=#{label.nhisPass},
+		data-label-nhis-fail=#{label.nhisFail},
+		data-label-nhis-progress=#{label.nhisProgress},
+		data-label-nhis-rule=#{label.nhisRule},
+		data-source-api=#{source.api},
+		data-empty=#{empty.message},
+		data-error=#{error.message}">
+	<div class="app-shell">
+		<header class="topbar">
+			<div>
+				<p class="eyebrow" th:text="#{app.eyebrow}">Fisher & Paykel SleepStyle</p>
+				<h1 th:text="#{app.title}">SleepStyle Dashboard</h1>
+			</div>
+			<div class="topbar-actions">
+				<form th:if="${loginEmail != null && !loginEmail.isBlank()}" th:action="@{/auth/logout}" method="post">
+					<input type="hidden" name="_csrf" th:value="${csrfToken}">
+					<button class="ghost-button" type="submit" th:text="#{login.logout}">Logout</button>
+				</form>
+				<select id="languageSelect" class="select" th:aria-label="#{control.language}">
+					<option value="en" th:selected="${#locale.language == 'en'}">English</option>
+					<option value="ko" th:selected="${#locale.language == 'ko'}">한국어</option>
+					<option value="ja" th:selected="${#locale.language == 'ja'}">日本語</option>
+					<option value="zh" th:selected="${#locale.language == 'zh'}">中文</option>
+				</select>
+				<button id="themeToggle" class="icon-button" type="button" th:aria-label="#{control.theme}">
+					<span class="theme-icon" aria-hidden="true"></span>
+				</button>
+			</div>
+		</header>
+
+		<section class="control-band" aria-label="Filters">
+			<label>
+				<span th:text="#{control.since}">Since</span>
+				<input id="sinceInput" type="date" th:value="${defaultSince}">
+			</label>
+			<label>
+				<span th:text="#{control.endDate}">End date</span>
+				<input id="endDateInput" type="date" th:value="${defaultEndDate}">
+			</label>
+			<button id="refreshButton" class="primary-button" type="button">
+				<span th:text="#{control.refresh}">Refresh</span>
+			</button>
+			<p id="sourceBadge" class="source-badge">-</p>
+		</section>
+
+		<main class="dashboard-console">
+			<section class="left-rail">
+				<article class="panel device-card">
+					<p class="eyebrow" th:text="#{section.device}">Device</p>
+					<div class="device-orb">S</div>
+					<h2 id="deviceModel">SleepStyle</h2>
+					<div class="device-meta">
+						<span th:text="#{label.startDate}">Start date</span>
+						<strong id="therapyStart">-</strong>
+					</div>
+				</article>
+
+				<section class="metric-meters">
+					<article class="meter-card">
+						<span th:text="#{chart.score}">Score</span>
+						<div class="meter-ring accent-mint" id="scoreRing"><b id="scoreValue">0</b></div>
+					</article>
+					<article class="meter-card">
+						<span th:text="#{metric.avgAhi}">AHI</span>
+						<div class="meter-ring accent-gold" id="ahiRing"><b id="avgAhi">0.0</b></div>
+					</article>
+				</section>
+
+				<article class="panel compact-stat">
+					<span th:text="#{metric.avgLeak}">Avg leak</span>
+					<strong id="avgLeak">0.0</strong>
+					<div class="sparkline"><span id="leakBar"></span></div>
+				</article>
+
+				<article class="panel breakdown-panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{section.usage}">Usage</p>
+							<h2 th:text="#{section.complianceSplit}">Compliance split</h2>
+						</div>
+					</div>
+					<div class="chart-box small-donut">
+						<canvas id="complianceChart"></canvas>
+					</div>
+				</article>
+
+				<section class="mini-grid">
+					<article class="mini-card">
+						<span th:text="#{metric.avgHours}">Avg hours</span>
+						<strong id="avgHours">0.0h</strong>
+					</article>
+					<article class="mini-card">
+						<span th:text="#{metric.compliance}">Compliance</span>
+						<strong id="compliance">0%</strong>
+					</article>
+					<article class="mini-card">
+						<span th:text="#{metric.highLeakDays}">high leak days</span>
+						<strong id="highLeakDays">0</strong>
+					</article>
+					<article class="mini-card">
+						<span th:text="#{metric.lowUsageDays}">low usage days</span>
+						<strong id="lowUsageDays">0</strong>
+					</article>
+				</section>
+
+				<article class="panel nhis-card">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow">NHIS Korea</p>
+							<h2 th:text="#{section.nhisCompliance}">Compliance period</h2>
+						</div>
+						<span id="nhisStatus" class="pill pill-warn">-</span>
+					</div>
+					<div class="nhis-progress">
+						<span id="nhisProgressBar"></span>
+					</div>
+					<div class="nhis-grid">
+						<div>
+							<span th:text="#{label.compliancePeriod}">Period</span>
+							<strong id="nhisPeriod">-</strong>
+						</div>
+						<div>
+							<span th:text="#{label.bestWindow}">Best 30 days</span>
+							<strong id="nhisWindow">-</strong>
+						</div>
+						<div>
+							<span th:text="#{label.qualifiedDays}">Qualified days</span>
+							<strong id="nhisQualified">0 / 21</strong>
+						</div>
+					</div>
+					<div class="nhis-rule-row">
+						<p class="nhis-rule" th:text="#{label.nhisRule}">21 days with 4h+ usage in any consecutive 30-day window during the first 90 days.</p>
+						<a class="source-link-button"
+						   href="https://www.nhis.or.kr/static/html/wbma/c/wbmac0228_9.pdf"
+						   target="_blank"
+						   rel="noopener noreferrer"
+						   th:text="#{label.nhisSource}">Source</a>
+					</div>
+				</article>
+			</section>
+
+			<section class="chart-column">
+				<article class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{section.trend}">Trend</p>
+							<h2 th:text="#{section.nightlyHours}">Nightly hours</h2>
+						</div>
+					</div>
+					<div class="chart-box">
+						<canvas id="hoursChart"></canvas>
+					</div>
+				</article>
+				<article class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{section.quality}">Quality</p>
+							<h2 th:text="#{section.therapySignal}">Therapy signal</h2>
+						</div>
+					</div>
+					<div class="chart-box">
+						<canvas id="trendChart"></canvas>
+					</div>
+				</article>
+				<article class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{metric.avgLeak}">Avg leak</p>
+							<h2 th:text="#{section.leakTrend}">Leak trend</h2>
+						</div>
+					</div>
+					<div class="chart-box chart-box-short">
+						<canvas id="leakChart"></canvas>
+					</div>
+				</article>
+			</section>
+
+			<section class="chart-column">
+				<article class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{section.review}">Review</p>
+							<h2 th:text="#{section.scoreTrend}">Score trend</h2>
+						</div>
+					</div>
+					<div class="chart-box">
+						<canvas id="scoreChart"></canvas>
+					</div>
+				</article>
+				<article class="panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{chart.humidity}">Humidity</p>
+							<h2 th:text="#{section.comfortTrend}">Comfort trend</h2>
+						</div>
+					</div>
+					<div class="chart-box">
+						<canvas id="humidityChart"></canvas>
+					</div>
+				</article>
+				<article class="panel table-panel">
+					<div class="panel-header">
+						<div>
+							<p class="eyebrow" th:text="#{section.details}">Details</p>
+							<h2 th:text="#{section.dailyRecords}">Daily records</h2>
+						</div>
+					</div>
+					<div class="table-wrap">
+						<table>
+							<thead>
+								<tr>
+									<th th:text="#{table.date}">Date</th>
+									<th th:text="#{table.hours}">Hours</th>
+									<th th:text="#{table.ahi}">AHI</th>
+									<th th:text="#{table.leak}">Leak</th>
+									<th th:text="#{table.status}">Status</th>
+								</tr>
+							</thead>
+							<tbody id="metricsBody"></tbody>
+						</table>
+					</div>
+				</article>
+			</section>
+		</main>
+	</div>
+</body>
+</html>

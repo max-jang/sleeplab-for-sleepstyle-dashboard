@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.language}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="#{login.title}">Login</title>
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
+	<script th:src="@{/js/login.js}" defer></script>
+</head>
+<body class="login-page">
+	<main class="login-shell">
+		<section class="login-panel">
+			<div class="login-visual" aria-hidden="true">
+				<div class="login-mark">S</div>
+				<div class="visual-chart">
+					<span class="bar-one"></span>
+					<span class="bar-two"></span>
+					<span class="bar-three"></span>
+					<span class="bar-four"></span>
+					<span class="bar-five"></span>
+				</div>
+				<div class="visual-wave"></div>
+			</div>
+
+			<div class="login-content">
+				<div class="login-heading">
+					<p class="eyebrow" th:text="#{app.eyebrow}">Fisher & Paykel SleepStyle</p>
+					<h1 th:text="#{login.title}">Login</h1>
+					<p th:text="#{login.subtitle}">Use your SleepStyle account to issue a server-side session for this dashboard.</p>
+				</div>
+
+				<form class="login-form" th:action="@{/auth/login}" th:object="${loginForm}" method="post">
+					<input type="hidden" name="_csrf" th:value="${csrfToken}">
+					<p class="form-error" th:if="${loginError}" th:text="${loginError}">Login failed</p>
+					<label>
+						<span th:text="#{login.email}">Email</span>
+						<input type="email" th:field="*{email}" autocomplete="username" required autofocus>
+					</label>
+					<label>
+						<span th:text="#{login.password}">Password</span>
+						<input type="password" th:field="*{password}" autocomplete="current-password" required>
+					</label>
+					<label class="remember-row">
+						<input id="rememberEmail" type="checkbox">
+						<span th:text="#{login.rememberEmail}">Remember email</span>
+					</label>
+					<button class="primary-button login-button" type="submit" th:text="#{login.submit}">Login</button>
+				</form>
+
+				<div class="login-footer">
+					<select id="languageSelect" class="select" th:aria-label="#{control.language}">
+						<option value="en" th:selected="${#locale.language == 'en'}">English</option>
+						<option value="ko" th:selected="${#locale.language == 'ko'}">한국어</option>
+						<option value="ja" th:selected="${#locale.language == 'ja'}">日本語</option>
+						<option value="zh" th:selected="${#locale.language == 'zh'}">中文</option>
+					</select>
+					<button id="themeToggle" class="icon-button" type="button" th:aria-label="#{control.theme}">
+						<span class="theme-icon" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</section>
+	</main>
+</body>
+</html>
