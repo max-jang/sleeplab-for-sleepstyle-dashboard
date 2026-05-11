@@ -21,8 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function loadDashboard() {
-	await Promise.all([loadProduct(), loadMetrics()]);
-	renderProduct();
+	setRefreshLoading(true);
+	if (!state.response) {
+		showDashboardSkeleton();
+	}
+	try {
+		await Promise.all([loadProduct(), loadMetrics()]);
+		renderProduct();
+	}
+	finally {
+		setRefreshLoading(false);
+	}
 }
 
 async function loadProduct() {
@@ -64,6 +73,7 @@ async function loadMetrics() {
 		const sourceBadge = document.getElementById('sourceBadge');
 		sourceBadge.textContent = labels.error;
 		sourceBadge.title = error.message;
+		showDashboardContent();
 		console.error(error);
 	}
 }
@@ -86,6 +96,7 @@ function renderProduct() {
 }
 
 function renderDashboard() {
+	showDashboardContent();
 	const summary = state.response.summary;
 	const score = therapyScore(summary);
 	document.getElementById('avgAhi').textContent = fixed(summary.averageAhi);
@@ -106,6 +117,22 @@ function renderDashboard() {
 	renderCharts();
 	renderProduct();
 	resizeCharts();
+}
+
+function showDashboardSkeleton() {
+	document.getElementById('dashboardSkeleton').hidden = false;
+	document.getElementById('dashboardConsole').hidden = true;
+}
+
+function showDashboardContent() {
+	document.getElementById('dashboardSkeleton').hidden = true;
+	document.getElementById('dashboardConsole').hidden = false;
+}
+
+function setRefreshLoading(loading) {
+	const button = document.getElementById('refreshButton');
+	button.classList.toggle('is-loading', loading);
+	button.disabled = loading;
 }
 
 function renderCharts() {

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
 	<script th:src="@{/js/login.js}" defer></script>
 </head>
-<body class="login-page">
+<body class="login-page" th:attr="data-login-loading=#{login.loading}">
 	<main class="login-shell">
 		<section class="login-panel">
 			<div class="login-visual" aria-hidden="true">
@@ -44,7 +44,10 @@
 						<input id="rememberEmail" type="checkbox">
 						<span th:text="#{login.rememberEmail}">Remember email</span>
 					</label>
-					<button class="primary-button login-button" type="submit" th:text="#{login.submit}">Login</button>
+					<button id="loginSubmitButton" class="primary-button login-button" type="submit">
+						<span class="button-spinner" aria-hidden="true"></span>
+						<span class="button-label" th:text="#{login.submit}">Login</span>
+					</button>
 				</form>
 
 				<div class="login-footer">

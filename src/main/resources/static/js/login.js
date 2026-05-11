@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	applyRememberedEmail();
 	document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 	document.getElementById('languageSelect').addEventListener('change', changeLanguage);
-	document.querySelector('.login-form').addEventListener('submit', saveEmailPreference);
+	document.querySelector('.login-form').addEventListener('submit', handleLoginSubmit);
 });
 
 function applyStoredTheme() {
@@ -46,4 +46,13 @@ function saveEmailPreference() {
 		localStorage.removeItem('sleepstyle-remember-email');
 		localStorage.removeItem('sleepstyle-email');
 	}
+}
+
+function handleLoginSubmit() {
+	saveEmailPreference();
+	const button = document.getElementById('loginSubmitButton');
+	const label = button.querySelector('.button-label');
+	button.classList.add('is-loading');
+	button.disabled = true;
+	label.textContent = document.body.dataset.loginLoading || label.textContent;
 }

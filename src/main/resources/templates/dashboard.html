@@ -78,6 +78,7 @@
 				<input id="endDateInput" type="date" th:value="${defaultEndDate}">
 			</label>
 			<button id="refreshButton" class="primary-button" type="button">
+				<span class="button-spinner" aria-hidden="true"></span>
 				<span th:text="#{control.refresh}">Refresh</span>
 			</button>
 			<p id="sourceBadge" class="source-badge">-</p>
@@ -92,7 +93,38 @@
 			</div>
 		</section>
 
-		<main id="dashboardConsole" class="dashboard-console view-all">
+		<section id="dashboardSkeleton" class="dashboard-skeleton" aria-hidden="true">
+			<div class="skeleton-stack">
+				<article class="skeleton-panel skeleton-device">
+					<span class="skeleton-line short"></span>
+					<span class="skeleton-orb"></span>
+					<span class="skeleton-line wide"></span>
+					<span class="skeleton-line medium"></span>
+				</article>
+				<div class="skeleton-meter-grid">
+					<article class="skeleton-panel skeleton-meter"></article>
+					<article class="skeleton-panel skeleton-meter"></article>
+				</div>
+				<article class="skeleton-panel skeleton-stat">
+					<span class="skeleton-line short"></span>
+					<span class="skeleton-line value"></span>
+					<span class="skeleton-bar"></span>
+				</article>
+				<article class="skeleton-panel skeleton-donut"></article>
+			</div>
+			<div class="skeleton-stack">
+				<article class="skeleton-panel skeleton-chart"></article>
+				<article class="skeleton-panel skeleton-chart"></article>
+				<article class="skeleton-panel skeleton-chart short"></article>
+			</div>
+			<div class="skeleton-stack">
+				<article class="skeleton-panel skeleton-chart"></article>
+				<article class="skeleton-panel skeleton-chart"></article>
+				<article class="skeleton-panel skeleton-table"></article>
+			</div>
+		</section>
+
+		<main id="dashboardConsole" class="dashboard-console view-all" hidden>
 			<section class="left-rail dashboard-group summary-group" data-dashboard-section="summary compliance">
 				<article class="panel device-card" data-dashboard-section="summary">
 					<p class="eyebrow" th:text="#{section.device}">Device</p>
