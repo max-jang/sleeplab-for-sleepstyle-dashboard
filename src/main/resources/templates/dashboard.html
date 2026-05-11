@@ -84,10 +84,12 @@
 		</section>
 
 		<section class="sync-hint">
-			<button id="syncHintButton" class="sync-hint-button" type="button" th:text="#{sync.hint}">Can’t see your data?</button>
-			<p id="syncHintMessage" class="sync-hint-message" hidden th:text="#{sync.message}">
-				If the SleepStyle app is not working, try turning Bluetooth off and on or reinstalling the app.
-			</p>
+			<div class="sync-hint-copy">
+				<button id="syncHintButton" class="sync-hint-button" type="button" th:text="#{sync.hint}">Can’t see the latest data?</button>
+				<p id="syncHintMessage" class="sync-hint-message" hidden th:text="#{sync.message}">
+					Try reconnecting the device and opening the SleepStyle app.
+				</p>
+			</div>
 		</section>
 
 		<main id="dashboardConsole" class="dashboard-console view-all">

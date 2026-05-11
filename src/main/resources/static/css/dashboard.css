@@ -236,12 +236,22 @@ h2 {
 }
 
 .sync-hint {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	margin: -6px 0 16px;
-	padding: 0 2px;
+	display: grid;
+	margin: -4px 0 16px;
+	border: 1px solid color-mix(in srgb, var(--line) 74%, transparent);
+	border-radius: 8px;
+	padding: 12px 14px;
+	background:
+		linear-gradient(135deg, color-mix(in srgb, var(--blue) 8%, transparent), transparent 62%),
+		color-mix(in srgb, var(--panel) 78%, transparent);
 	color: var(--muted);
+	box-shadow: 0 10px 28px color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.sync-hint-copy {
+	display: grid;
+	gap: 6px;
+	max-width: 980px;
 }
 
 .sync-hint-button {
@@ -250,10 +260,9 @@ h2 {
 	cursor: pointer;
 	background: transparent;
 	color: var(--muted);
-	font-size: 0.84rem;
-	font-weight: 800;
-	text-decoration: underline;
-	text-underline-offset: 3px;
+	font-size: 0.88rem;
+	font-weight: 900;
+	text-align: left;
 }
 
 .sync-hint-button:hover {
@@ -263,8 +272,8 @@ h2 {
 .sync-hint-message {
 	margin: 0;
 	color: var(--muted);
-	font-size: 0.84rem;
-	line-height: 1.5;
+	font-size: 0.9rem;
+	line-height: 1.6;
 }
 
 .kpi-grid {
