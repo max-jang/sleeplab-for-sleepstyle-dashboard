@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 	document.getElementById('languageSelect').addEventListener('change', changeLanguage);
 	document.getElementById('refreshButton').addEventListener('click', loadDashboard);
+	document.getElementById('syncHintButton').addEventListener('click', toggleSyncHint);
+	document.querySelectorAll('.tab-button').forEach((button) => button.addEventListener('click', activateTab));
 	loadDashboard();
 });
 
@@ -103,6 +105,7 @@ function renderDashboard() {
 	renderNhisCompliance();
 	renderCharts();
 	renderProduct();
+	resizeCharts();
 }
 
 function renderCharts() {
@@ -278,6 +281,7 @@ function renderNhisCompliance() {
 	document.getElementById('nhisWindow').textContent = `${formatDate(result.windowStart)} - ${formatDate(result.windowEnd)}`;
 	document.getElementById('nhisQualified').textContent = `${result.qualifiedDays} / 21`;
 	progressBar.style.width = `${Math.min(result.qualifiedDays / 21 * 100, 100)}%`;
+
 }
 
 function nhisCompliance() {
@@ -562,6 +566,31 @@ function changeLanguage(event) {
 	const url = new URL(window.location.href);
 	url.searchParams.set('lang', event.target.value);
 	window.location.href = url.toString();
+}
+
+function activateTab(event) {
+	const target = event.currentTarget.dataset.tabTarget;
+	document.querySelectorAll('.tab-button').forEach((button) => {
+		button.classList.toggle('is-active', button.dataset.tabTarget === target);
+	});
+	const dashboard = document.getElementById('dashboardConsole');
+	dashboard.className = `dashboard-console view-${target}`;
+	document.querySelectorAll('[data-dashboard-section]').forEach((element) => {
+		const sections = element.dataset.dashboardSection.split(' ');
+		element.classList.toggle('is-hidden', target !== 'all' && !sections.includes(target));
+	});
+	resizeCharts();
+}
+
+function toggleSyncHint() {
+	const message = document.getElementById('syncHintMessage');
+	message.hidden = !message.hidden;
+}
+
+function resizeCharts() {
+	window.requestAnimationFrame(() => {
+		Object.values(state.charts).forEach((chart) => chart.resize());
+	});
 }
 
 function applyTherapyDateDefaults() {

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title th:text="#{app.title}">SleepStyle Dashboard</title>
+	<title th:text="#{app.title}">SleepLab for SleepStyle</title>
 	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
 	<script th:src="@{/webjars/chart.js/4.4.7/dist/chart.umd.js}" defer></script>
 	<script th:src="@{/js/dashboard.js}" defer></script>
@@ -42,7 +42,7 @@
 		<header class="topbar">
 			<div>
 				<p class="eyebrow" th:text="#{app.eyebrow}">Fisher & Paykel SleepStyle</p>
-				<h1 th:text="#{app.title}">SleepStyle Dashboard</h1>
+				<h1 th:text="#{app.title}">SleepLab for SleepStyle</h1>
 			</div>
 			<div class="topbar-actions">
 				<form th:if="${loginEmail != null && !loginEmail.isBlank()}" th:action="@{/auth/logout}" method="post">
@@ -61,6 +61,13 @@
 			</div>
 		</header>
 
+		<nav class="tab-nav" aria-label="Dashboard sections">
+			<button class="tab-button is-active" type="button" data-tab-target="all" th:text="#{tab.all}">All</button>
+			<button class="tab-button" type="button" data-tab-target="trends" th:text="#{tab.trends}">Trends</button>
+			<button class="tab-button" type="button" data-tab-target="records" th:text="#{tab.records}">Records</button>
+			<button class="tab-button" type="button" data-tab-target="compliance" th:text="#{tab.compliance}">Compliance</button>
+		</nav>
+
 		<section class="control-band" aria-label="Filters">
 			<label>
 				<span th:text="#{control.since}">Since</span>
@@ -76,9 +83,16 @@
 			<p id="sourceBadge" class="source-badge">-</p>
 		</section>
 
-		<main class="dashboard-console">
-			<section class="left-rail">
-				<article class="panel device-card">
+		<section class="sync-hint">
+			<button id="syncHintButton" class="sync-hint-button" type="button" th:text="#{sync.hint}">Can’t see your data?</button>
+			<p id="syncHintMessage" class="sync-hint-message" hidden th:text="#{sync.message}">
+				If the SleepStyle app is not working, try turning Bluetooth off and on or reinstalling the app.
+			</p>
+		</section>
+
+		<main id="dashboardConsole" class="dashboard-console view-all">
+			<section class="left-rail dashboard-group summary-group" data-dashboard-section="summary compliance">
+				<article class="panel device-card" data-dashboard-section="summary">
 					<p class="eyebrow" th:text="#{section.device}">Device</p>
 					<div class="device-orb">S</div>
 					<h2 id="deviceModel">SleepStyle</h2>
@@ -88,7 +102,7 @@
 					</div>
 				</article>
 
-				<section class="metric-meters">
+				<section class="metric-meters" data-dashboard-section="summary">
 					<article class="meter-card">
 						<span th:text="#{chart.score}">Score</span>
 						<div class="meter-ring accent-mint" id="scoreRing"><b id="scoreValue">0</b></div>
@@ -99,13 +113,13 @@
 					</article>
 				</section>
 
-				<article class="panel compact-stat">
+				<article class="panel compact-stat" data-dashboard-section="summary">
 					<span th:text="#{metric.avgLeak}">Avg leak</span>
 					<strong id="avgLeak">0.0</strong>
 					<div class="sparkline"><span id="leakBar"></span></div>
 				</article>
 
-				<article class="panel breakdown-panel">
+				<article class="panel breakdown-panel" data-dashboard-section="compliance">
 					<div class="panel-header">
 						<div>
 							<p class="eyebrow" th:text="#{section.usage}">Usage</p>
@@ -117,7 +131,7 @@
 					</div>
 				</article>
 
-				<section class="mini-grid">
+				<section class="mini-grid" data-dashboard-section="summary">
 					<article class="mini-card">
 						<span th:text="#{metric.avgHours}">Avg hours</span>
 						<strong id="avgHours">0.0h</strong>
@@ -136,7 +150,7 @@
 					</article>
 				</section>
 
-				<article class="panel nhis-card">
+				<article class="panel nhis-card" data-dashboard-section="compliance">
 					<div class="panel-header">
 						<div>
 							<p class="eyebrow">NHIS Korea</p>
@@ -172,7 +186,7 @@
 				</article>
 			</section>
 
-			<section class="chart-column">
+			<section class="chart-column dashboard-group trends-group" data-dashboard-section="trends">
 				<article class="panel">
 					<div class="panel-header">
 						<div>
@@ -208,8 +222,8 @@
 				</article>
 			</section>
 
-			<section class="chart-column">
-				<article class="panel">
+			<section class="chart-column dashboard-group mixed-group" data-dashboard-section="trends records">
+				<article class="panel" data-dashboard-section="trends">
 					<div class="panel-header">
 						<div>
 							<p class="eyebrow" th:text="#{section.review}">Review</p>
@@ -220,7 +234,7 @@
 						<canvas id="scoreChart"></canvas>
 					</div>
 				</article>
-				<article class="panel">
+				<article class="panel" data-dashboard-section="trends">
 					<div class="panel-header">
 						<div>
 							<p class="eyebrow" th:text="#{chart.humidity}">Humidity</p>
@@ -231,7 +245,7 @@
 						<canvas id="humidityChart"></canvas>
 					</div>
 				</article>
-				<article class="panel table-panel">
+				<article class="panel table-panel" data-dashboard-section="records">
 					<div class="panel-header">
 						<div>
 							<p class="eyebrow" th:text="#{section.details}">Details</p>

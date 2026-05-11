@@ -1,8 +1,8 @@
-# SleepStyle 대시보드
+# SleepLab for SleepStyle
 
 ![SleepStyle 대시보드 스크린샷](src/main/resources/static/image/screenshot.png)
 
-Fisher & Paykel SleepStyle 치료 데이터를 확인하기 위한 로컬 대시보드입니다.
+Fisher & Paykel SleepStyle 치료 데이터를 확인하기 위한 로컬 분석 대시보드입니다.
 
 Java 17, Spring Boot, Gradle, Thymeleaf, Chart.js로 만들었습니다. 공식 SleepStyle 로그인 흐름으로 로그인한 뒤 AHI, 누출, 가습, 사용시간, 순응률, 한국 국민건강보험공단 순응기간 진행 상태를 보여줍니다.
 
@@ -10,6 +10,7 @@ Java 17, Spring Boot, Gradle, Thymeleaf, Chart.js로 만들었습니다. 공식 
 
 - 공식 SleepStyle 로그인 흐름 사용
 - 직접 붙여넣는 bearer 토큰 없음
+- 개요, 추세, 기록, 순응 섹션
 - 일별 치료 요약과 추세 그래프
 - 한국 국민건강보험공단 순응기간 보조 카드
 - 라이트모드와 다크모드

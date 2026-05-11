@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.maxjang'
 version = '1.0.0'
-description = 'SleepStyle dashboard'
+description = 'SleepLab for SleepStyle dashboard'
 
 java {
 	toolchain {

@@ -1,8 +1,8 @@
-# SleepStyle Dashboard
+# SleepLab for SleepStyle
 
 ![SleepStyle Dashboard screenshot](src/main/resources/static/image/screenshot.png)
 
-A local dashboard for viewing Fisher & Paykel SleepStyle therapy data.
+A local lab-style dashboard for viewing Fisher & Paykel SleepStyle therapy data.
 
 This project is built with Java 17, Spring Boot, Gradle, Thymeleaf, and Chart.js. It signs in through the official SleepStyle login flow and shows therapy metrics such as AHI, leak, humidity, usage hours, compliance, and Korea NHIS compliance-period progress.
 
@@ -10,6 +10,7 @@ This project is built with Java 17, Spring Boot, Gradle, Thymeleaf, and Chart.js
 
 - Login through the official SleepStyle flow
 - No manually pasted bearer token
+- Overview, Trends, Records, and Compliance sections
 - Daily therapy summaries and trend charts
 - Korea NHIS compliance-period helper card
 - Light mode and dark mode

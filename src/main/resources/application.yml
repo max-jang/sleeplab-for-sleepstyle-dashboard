@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sleepstyle-dashboard
+    name: sleeplab-for-sleepstyle-dashboard
   thymeleaf:
     cache: false
   messages:
