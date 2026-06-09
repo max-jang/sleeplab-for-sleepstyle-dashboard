@@ -1,5 +1,7 @@
 # SleepLab for SleepStyle
 
+> **Archived:** This project is no longer being developed because the primary CPAP device changed from **Fisher & Paykel SleepStyle** to **ResMed AirSense 11**. Future work will move to a separate project, using this dashboard UI as a reference.
+
 ![SleepStyle Dashboard screenshot](src/main/resources/static/image/screenshot.png)
 
 A local lab-style dashboard for viewing Fisher & Paykel SleepStyle therapy data.
