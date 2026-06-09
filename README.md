@@ -1,6 +1,6 @@
 # SleepLab for SleepStyle
 
-> **Archived:** This project is no longer being developed because the primary CPAP device changed from **Fisher & Paykel SleepStyle** to **ResMed AirSense 11**. Future work will move to a separate project, using this dashboard UI as a reference.
+> **Archived and no longer updated:** This SleepStyle version is no longer maintained because the primary CPAP device changed from **Fisher & Paykel SleepStyle** to **ResMed AirSense 11**. Please use the new ResMed myAir project instead: [max-jang/sleeplab-for-resmed-myair-dashboard](https://github.com/max-jang/sleeplab-for-resmed-myair-dashboard).
 
 ![SleepStyle Dashboard screenshot](src/main/resources/static/image/screenshot.png)
 

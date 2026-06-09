@@ -1,6 +1,6 @@
 # SleepLab for SleepStyle
 
-> **아카이브 예정:** 사용 중인 양압기가 **Fisher & Paykel SleepStyle**에서 **ResMed AirSense 11**로 변경되어 이 프로젝트는 더 이상 진행하지 않습니다. 이후 작업은 별도 프로젝트로 분리하고, 이 대시보드 UI만 참고할 예정입니다.
+> **아카이브 및 업데이트 중단:** 사용 중인 양압기가 **Fisher & Paykel SleepStyle**에서 **ResMed AirSense 11**로 변경되어 SleepStyle 버전은 더 이상 업데이트하지 않습니다. 이후 작업은 새 ResMed myAir 프로젝트에서 진행합니다: [max-jang/sleeplab-for-resmed-myair-dashboard](https://github.com/max-jang/sleeplab-for-resmed-myair-dashboard).
 
 ![SleepStyle 대시보드 스크린샷](src/main/resources/static/image/screenshot.png)
 
